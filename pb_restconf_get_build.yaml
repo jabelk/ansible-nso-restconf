@@ -1,0 +1,34 @@
+
+- name: BUILD CONFIG WITH RESTCONF GET AND NSO
+  hosts: "nso_server"
+  gather_facts: no
+  tasks:
+
+  - name: RESTCONF GET CONFIG FROM DIST-RTR01 FROM NSO 
+    ansible.netcommon.restconf_get:
+        path: "/tailf-ncs:devices/device=dist-rtr01/config/tailf-ned-cisco-ios:interface/"
+    register: restconf_result
+  
+  - name: VIEW DEVICE INTERFACE CONFIG
+    debug: var=restconf_result
+
+  - name: SET FACT TO EXTRACT RESPONSE VALUE
+    set_fact: 
+      int_config: "{{ restconf_result.response }}"
+
+  - name: USE JINJA2 TO TRANSFORM JSON OUTPUT TO YAML FILE
+    template:
+      lstrip_blocks: yes
+      src: json2yaml.j2
+      dest: vars/int_vars.yaml
+
+# then create vars/int_vars_to_push.yaml file manually and copy and paste the Loopback YAML
+# in there to have config to work with to push with next playbook
+    # Loopback:
+    # -   description: to
+    #     ip:
+    #         no-address:
+    #             address: false
+    #     name: '0'
+    #     shutdown:
+    #     - null

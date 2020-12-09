@@ -1,0 +1,36 @@
+
+- name: PUSH CONFIG WITH RESTCONF CONFIG AND NSO
+  hosts: "nso_server"
+  gather_facts: no
+  tasks:
+
+  - name: LOAD LOOPBACK CONFIG 
+    include_vars:
+      file: int_vars_to_push.yaml
+      name: int_vars_file
+
+  - name: ADD LOOPBACK 100 TO NSO AND DEVICE
+    register: restconf_result
+    ansible.netcommon.restconf_config:
+        path: "/tailf-ncs:devices/device=dist-rtr01/config/tailf-ned-cisco-ios:interface"
+        method: "patch"
+        content: "{{ int_vars_file | to_json }}"
+
+  - name: VERIFY NEW LOOPBACK IS PRESENT
+    ansible.netcommon.restconf_get:
+        path: "/tailf-ncs:devices/device=dist-rtr01/config/tailf-ned-cisco-ios:interface/"
+    register: restconf_result
+
+# used .get() to grab key to avoid expected token 'end of print statement', got ':' error  
+  - name: VIEW DEVICE INTERFACE CONFIG
+    debug: 
+      var: "restconf_result.response.get('tailf-ned-cisco-ios:interface').Loopback"
+
+  - name: DELETE LOOPBACK 100 FROM NSO AND DEVICE
+    register: restconf_result
+    ansible.netcommon.restconf_config:
+        path: "/tailf-ncs:devices/device=dist-rtr01/config/tailf-ned-cisco-ios:interface/Loopback=100"
+        method: "delete"
+      
+
+ 

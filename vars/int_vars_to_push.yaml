@@ -1,0 +1,11 @@
+# this was created by copy and pasting from the file int_vars.yaml 
+# and editing just the Loopback part of the config
+tailf-ned-cisco-ios:interface:
+    Loopback:
+    -   description: "DESCRIPTION BY ANSIBLE"
+        ip:
+            no-address:
+                address: false
+        name: '100'
+        shutdown:
+        - null

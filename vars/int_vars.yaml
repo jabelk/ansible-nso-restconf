@@ -1,0 +1,84 @@
+tailf-ned-cisco-ios:interface:
+    GigabitEthernet:
+    -   description: to port6.sandbox-backend
+        ip:
+            address:
+                primary:
+                    address: 10.10.20.175
+                    mask: 255.255.255.0
+        mop:
+            sysid: false
+            xenabled: false
+        name: '1'
+        negotiation:
+            auto: true
+        vrf:
+            forwarding: Mgmt-intf
+    -   description: L3 Link to core-rtr01
+        ip:
+            address:
+                primary:
+                    address: 172.16.252.21
+                    mask: 255.255.255.252
+        mop:
+            sysid: false
+            xenabled: false
+        name: '2'
+        negotiation:
+            auto: true
+    -   description: L3 Link to core-rtr02
+        ip:
+            address:
+                primary:
+                    address: 172.16.252.25
+                    mask: 255.255.255.252
+        mop:
+            sysid: false
+            xenabled: false
+        name: '3'
+        negotiation:
+            auto: true
+    -   description: L3 Link to dist-sw01
+        ip:
+            address:
+                primary:
+                    address: 172.16.252.2
+                    mask: 255.255.255.252
+        mop:
+            sysid: false
+            xenabled: false
+        name: '4'
+        negotiation:
+            auto: true
+    -   description: L3 Link to dist-sw02
+        ip:
+            address:
+                primary:
+                    address: 172.16.252.10
+                    mask: 255.255.255.252
+        mop:
+            sysid: false
+            xenabled: false
+        name: '5'
+        negotiation:
+            auto: true
+    -   description: L3 Link to dist-rtr02
+        ip:
+            address:
+                primary:
+                    address: 172.16.252.17
+                    mask: 255.255.255.252
+        mop:
+            sysid: false
+            xenabled: false
+        name: '6'
+        negotiation:
+            auto: true
+    Loopback:
+    -   description: to
+        ip:
+            no-address:
+                address: false
+        name: '0'
+        shutdown:
+        - null
